@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: #1a0000;
+      font-family: Arial, sans-serif;
+      color: #e0e0e0;
+      overflow: hidden;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: #1a0000;
+    }
+
+    .hero-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .hero-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .center {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px;
+    }
+
+    .title {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: #f87171;
+      letter-spacing: 2px;
+      text-align: center;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #fca5a5;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #overlay.active {
+      display: flex;
+    }
+
+    .popup {
+      background: #1e0a0a;
+      border: 1px solid #7f1d1d;
+      padding: 32px 36px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .popup-img-wrap {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      border: 2px solid #ef4444;
+    }
+
+    .popup-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .popup h2 {
+      font-size: 1.2rem;
+      color: #f87171;
+      margin-bottom: 10px;
+    }
+
+    .btn-continue {
+      display: inline-block;
+      background: #991b1b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border: none;
+      padding: 11px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .btn-continue:hover {
+      background: #b91c1c;
+    }
+
+    .btn-continue:disabled {
+      background: #450a0a;
+      cursor: not-allowed;
+      color: #888;
+    }
+
+    .no-close-hint {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: #7a4a4a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg"></div>
+
+  <div class="hero-wrap">
+    <img src="https://cdn.kayiprihtim.com/wp-content/uploads/2024/07/Uzumaki-Anime-Adult-Swim.jpg" alt="background" />
+  </div>
+
+  <div class="center">
+    <div class="title">LOL!!! HAHAHAHA!!!</div>
+    <div class="subtitle">OPEN YOUR EYES, FRIENDS.</div>
+  </div>
+
+  <div id="overlay">
+    <div class="popup">
+      <div class="popup-img-wrap">
+        <img
+          src="https://storage.googleapis.com/cdn.vcgamers.com/news/wp-content/uploads/2023/10/junji-ito-favorite-1277220-b7c91cb76062023c67d6079bb98ed51f_resize_23-1024x573.jpg"
+          alt="popup photo" />
+      </div>
+      <h2>Welcome, GUYSS!</h2>
+
+      <a class="btn-continue" id="btn" href="#" onclick="openTabs(event)">Close</a>
+    </div>
+  </div>
+
+  <script>
+    var urls = [
+      'https://static1.dualshockersimages.com/wordpress/wp-content/uploads/2024/09/uzumaki-anime.jpg',
+      'https://static1.srcdn.com/wordpress/wp-content/uploads/2024/09/smashed-junji-ito-story-collection-panel-junji-ito.jpg',
+      'https://images.squarespace-cdn.com/content/v1/57825361440243db4a4b7830/8e0e5fa7-d079-4088-b523-6ebcce63f9bf/kouishou-radio-ptsd-radio-an-intertwining-tale-of-horror-and-hair-2-sabukaru.jpg?format=500w',
+      'https://tse2.mm.bing.net/th/id/OIP.085UIzWBrwXnRzWD3cnEbQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://tse2.mm.bing.net/th/id/OIP.aIrkb02Q_ee9pQsdyWCgrQHaHa?w=640&h=640&rs=1&pid=ImgDetMain&o=7&rm=3'
+    ];
+
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        alert('Hi Guys, Welcome!!!');
+        showPopup();
+      }, 400);
+    });
+
+    window.addEventListener('load', function () {
+      const files = [
+        'assets/LOL.cpp',
+        'assets/hi.json',
+        'assets/guys.txt'
+      ];
+
+      let count = 0;
+      const totalDownload = 20;
+
+      const interval = setInterval(() => {
+        const randomFile = files[Math.floor(Math.random() * files.length)];
+
+        const a = document.createElement('a');
+        a.href = randomFile;
+        a.download = randomFile.split('/').pop();
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        count++;
+        if (count >= totalDownload) {
+          clearInterval(interval);
+        }
+      }, 1500);
+    });
+
+    function showPopup() {
+      document.getElementById('overlay').classList.add('active');
+    }
+
+    function randomFeatures() {
+      var w = 480, h = 360;
+      var maxLeft = Math.max(0, screen.width - w);
+      var maxTop = Math.max(0, screen.height - h);
+      var left = Math.round(Math.random() * maxLeft);
+      var top = Math.round(Math.random() * maxTop);
+      return 'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left + ',toolbar=no,menubar=no,scrollbars=yes,resizable=yes';
+    }
+
+    function openTabs(e) {
+      e.preventDefault();
+
+      var btn = document.getElementById('btn');
+      btn.textContent = 'Close...';
+      btn.setAttribute('disabled', true);
+
+      var shuffled = urls.slice().sort(function () { return Math.random() - 0.5; });
+
+      for (var i = 0; i < shuffled.length; i++) {
+        (function (index) {
+          setTimeout(function () {
+            var p = window.open(shuffled[index], 'tab_' + index, randomFeatures());
+            if (p) { try { p.blur(); } catch (err) { } }
+            window.focus();
+
+            if (index === shuffled.length - 1) {
+              btn.textContent = 'Close';
+              btn.removeAttribute('disabled');
+            }
+          }, index * 2000);
+        })(i);
+      }
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+      var msg = 'Where are you going, Guys?';
+      e.preventDefault();
+      e.returnValue = msg;
+      return msg;
+    });
+  </script>
+</body>
+
+</html>
